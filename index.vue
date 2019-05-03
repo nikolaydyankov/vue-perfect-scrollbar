@@ -4,13 +4,15 @@
   </section>
 </template>
 <style lang="scss">
-@import '~perfect-scrollbar/src/css/main.scss';
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+
 .ps-container {
   position: relative;
 }
+
 </style>
 <script>
-import scrollBar from 'perfect-scrollbar'
+import PerfectScrollbar from 'perfect-scrollbar'
 
 export default {
   name: 'vue-perfect-scrollbar',
@@ -27,20 +29,26 @@ export default {
       default: "section"
     }
   },
+  data() {
+    return {
+      ps: undefined
+    }
+  },
   methods: {
     scrollHanle(evt) {
       this.$emit(evt.type, evt)
     },
 
     update() {
-      scrollBar.update(this.$el)
+      this.ps.update(this.$el)
     },
 
     __init() {
       if (this.swicher) {
         if (!this._ps_inited) {
           this._ps_inited = true
-          scrollBar.initialize(this.$el, this.settings)
+          // scrollBar.initialize(this.$el, this.settings)
+          this.ps = new PerfectScrollbar(this.$el);
         } else {
           this.update(this.$el)
         }
@@ -48,7 +56,7 @@ export default {
     },
 
     __uninit() {
-      scrollBar.destroy(this.$el)
+      this.ps.destroy(this.$el)
       this._ps_inited = false
     },
   },
